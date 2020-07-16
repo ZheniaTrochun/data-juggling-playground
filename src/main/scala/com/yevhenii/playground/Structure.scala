@@ -1,8 +1,8 @@
-package com.yevhenii.playground.chimney
+package com.yevhenii.playground
 
 import io.scalaland.chimney.dsl._
 
-object Structure extends App {
+object Structure {
 
   final case class Street(name: Street.Name, number: Street.Number)
 
@@ -67,14 +67,48 @@ object Structure extends App {
       override def productPrefix: String = s"$Person.$HeightInCm"
     }
 
-    final case class Raw(name: String, age: String, heightInCm: String, phone: String, address: Address.Raw) {
-      override def productPrefix: String = s"$Person.$Raw"
+    case object Raw {
+      final case class Nested(name: String, age: String, heightInCm: String, phone: String, address: Address.Raw) {
+        override def productPrefix: String = s"$Person.$Raw.$Nested"
+
+        lazy val toFlat: Flat = {
+          this.into[Flat]
+            .withFieldConst(_.cityName, address.city.name)
+            .withFieldConst(_.cityZipCode, address.city.zipCode)
+            .withFieldConst(_.streetName, address.street.name)
+            .withFieldConst(_.streetNumber, address.street.number)
+            .transform
+        }
+      }
+
+      final case class Flat(
+        name: String,
+        age: String,
+        heightInCm: String,
+        phone: String,
+        cityName: String,
+        cityZipCode: String,
+        streetName: String,
+        streetNumber: String
+      ) {
+        override def productPrefix: String = s"$Person.$Raw.$Flat"
+
+        lazy val toNested: Nested = {
+          this.into[Nested]
+            .withFieldConst(_.address,
+              Address.Raw(
+                City.Raw(cityName, cityZipCode),
+                Street.Raw(streetName, streetNumber)
+              ))
+            .transform
+        }
+      }
     }
   }
 
   // --------------------------------------------------------------------------------------------------------
 
-  val rawPerson = Person.Raw(
+  val rawPerson = Person.Raw.Nested(
     name = "Bob",
     phone = "+380 12 345 67 89",
     age = "42",
@@ -96,10 +130,4 @@ object Structure extends App {
     .withFieldComputed(_.age, x => Person.Age(x.age.toInt))
     .withFieldComputed(_.heightInCm, x => Person.HeightInCm(x.heightInCm.toInt))
     .transform
-
-  println("-" * 100)
-  println(rawPerson)
-  println("-" * 100)
-  println(person)
-  println("-" * 100)
 }

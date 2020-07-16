@@ -6,7 +6,7 @@ import cats.implicits._
 import io.scalaland.chimney.dsl._
 
 object Validation extends App {
-  import Structure._
+  import com.yevhenii.playground.Structure._
 
   def intOrError(
     field: String,
@@ -30,7 +30,7 @@ object Validation extends App {
       .map(transform)
       .toValidatedNec
 
-  def validatePerson(rawPerson: Person.Raw): ValidatedNec[String, Person] =
+  def validatePerson(rawPerson: Person.Raw.Nested): ValidatedNec[String, Person] =
     Apply[ValidatedNec[String, *]]
       .map2[Person.Age, Person.HeightInCm, Person](
         mapToValidatedNec(intOrError(rawPerson.age, "age"), Person.Age),
@@ -43,7 +43,7 @@ object Validation extends App {
           .transform
       }
 
-  val rawCorrectPerson = Person.Raw(
+  val rawCorrectPerson = Person.Raw.Nested(
     name = "Bob",
     phone = "+380 12 345 67 89",
     age = "42",
@@ -60,7 +60,7 @@ object Validation extends App {
     )
   )
 
-  val rawIncorrectPerson = Person.Raw(
+  val rawIncorrectPerson = Person.Raw.Nested(
     name = "Bob",
     phone = "+380 12 345 67 89",
     age = "-42",
@@ -76,6 +76,11 @@ object Validation extends App {
       )
     )
   )
+
+  println("-" * 100)
+  println(rawCorrectPerson.toFlat)
+  println("-" * 50)
+  println(rawCorrectPerson.toFlat.toNested)
 
   println("-" * 100)
   println(validatePerson(rawCorrectPerson))
