@@ -35,7 +35,9 @@ lazy val commonSettings = Seq(
 lazy val dependencies = Seq(
   libraryDependencies ++= Seq(
     scalaland.chimney,
-    org.typelevel.`cats-core`
+    org.typelevel.`cats-core`,
+    com.github.`julien-truffaut`.`monocle-core`,
+    com.github.`julien-truffaut`.`monocle-macro`
   ),
   libraryDependencies ++= Seq(
     com.github.alexarchambault.`scalacheck-shapeless_1.14`,

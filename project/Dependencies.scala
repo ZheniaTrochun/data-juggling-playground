@@ -7,6 +7,16 @@ object Dependencies {
         val `scalacheck-shapeless_1.14` =
           "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.5"
       }
+
+      case object `julien-truffaut` {
+        val MonocleVersion = "2.0.0"
+
+        val `monocle-core` =
+          "com.github.julien-truffaut" %% "monocle-core" % MonocleVersion
+
+        val `monocle-macro` =
+          "com.github.julien-truffaut" %% "monocle-macro" % MonocleVersion
+      }
     }
 
     case object olegpy {
