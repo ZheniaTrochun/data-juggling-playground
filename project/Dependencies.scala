@@ -16,6 +16,9 @@ object Dependencies {
 
         val `monocle-macro` =
           "com.github.julien-truffaut" %% "monocle-macro" % MonocleVersion
+
+        val `monocle-law` =
+          "com.github.julien-truffaut" %% "monocle-law" % MonocleVersion
       }
     }
 
@@ -55,6 +58,9 @@ object Dependencies {
 
       val `cats-core` =
         "org.typelevel" %% "cats-core" % "2.1.1"
+
+      val kittens =
+        "org.typelevel" %% "kittens" % "2.1.0"
     }
   }
   

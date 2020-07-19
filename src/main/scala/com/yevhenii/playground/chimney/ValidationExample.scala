@@ -5,7 +5,7 @@ import cats.data.ValidatedNec
 import cats.implicits._
 import io.scalaland.chimney.dsl._
 
-object Validation extends App {
+object ValidationExample extends App {
   import com.yevhenii.playground.Structure._
 
   def intOrError(

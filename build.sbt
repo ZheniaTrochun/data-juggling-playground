@@ -41,9 +41,14 @@ lazy val dependencies = Seq(
   ),
   libraryDependencies ++= Seq(
     com.github.alexarchambault.`scalacheck-shapeless_1.14`,
+    com.github.`julien-truffaut`.`monocle-law`,
     org.scalacheck.scalacheck,
     org.scalatest.scalatest,
     org.scalatestplus.`scalacheck-1-14`,
-    org.typelevel.`discipline-scalatest`
-  ).map(_ % Test)
+    org.typelevel.`discipline-scalatest`,
+    org.typelevel.kittens
+  ).map(_ % Test),
+  dependencyOverrides ++= Seq(
+    org.scalatest.scalatest
+  )
 )
